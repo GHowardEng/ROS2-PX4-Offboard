@@ -165,7 +165,7 @@ class OffboardControl(Node):
 
         # Internal Timer
         timer_period = 0.01  # 100 Hz
-        self.timer = self.create_timer(timer_period, self.cmdloop_callback)
+        self.timer = self.create_timer(timer_period, self.cmdloop_callback) # Execute command loop at specified rate
         self.dt = timer_period
 
         # Member Variables
@@ -173,9 +173,7 @@ class OffboardControl(Node):
         self.arming_state = VehicleStatus.ARMING_STATE_DISARMED        
         self.last_nav_state = 0
         self.has_triggered = False
-        self.trigger_count = 0
         self.trigger_time = 0
-
 
     # Define Callback Functions
     # Callback to handle vehicle attitude message
@@ -239,35 +237,51 @@ class OffboardControl(Node):
         if(self.arming_state == VehicleStatus.ARMING_STATE_ARMED):
             self.get_logger().warn(f'Armed!', once=True) # Check for arming
 
-    # Timed command loop
+    # Timed command loop, 100Hz
     def cmdloop_callback(self):
         
+        # Generate offboard heartbeat on each loop. This must be done at minimum 2Hz!
+        # Modify/select offboard control mode as needed.
+        self.send_offboard_mode(actuator=False, attitude=True)
+
         # IF armed
         if(self.arming_state == VehicleStatus.ARMING_STATE_ARMED):          
 
             if(self.offboard_active): # AND in offboard mode
-                self.get_logger().info(f'Start Offboard', once=True)          
-           
+                if(not self.has_triggered):
+                    # Record trigger event
+                    self.has_triggered = True
+                    self.trigger_time = time()
+                    self.get_logger().info(f'Offboard Triggerd!')  
+
+                elif(time() - self.trigger_time > 10):
+                    # After 10s elapsed in offboard mode, revert to last navigation mode
+                    self.send_mode_cmd(self.last_nav_state)
+                    self.get_logger().info(f'Revert to mode: {self.last_nav_state}')
+
+                else:
+                    self.send_attitude_cmds(roll= 15 * np.pi/180 * np.sin(2*np.pi*0.5*(time()-self.trigger_time)), pitch=0.0, thr=0.5) # Send basic attitude and throttle commands
+
             # Else armed but not in offboard
             else:           
                 self.get_logger().info(f'Standby',throttle_duration_sec=30)
-                    
+                self.has_triggered = False # reset flag    
                 
     def send_attitude_cmds_quaternion(self, roll, pitch, thr):
-        
+        # Newer versions of PX4 require fixed-wing attitude setpoints to be sent as quaternion
         att_msg = VehicleAttitudeSetpoint()
         att_msg.q_d = euler_to_quaternion(roll,pitch,0)
-        att_msg.thrust_body[0] = thr
-        
+        att_msg.thrust_body[0] = thr # Note, providing X (forward) thrust assumes fixed-wing!
+         
         self.get_logger().info(f'Roll, Pitch, thr: {180/np.pi * roll}, {180/np.pi * pitch}, {att_msg.thrust_body[0]}')
         self.publisher_attitude.publish(att_msg)
 
     def send_attitude_cmds(self, roll, pitch, thr):
-        
+        # Older versions of PX4 allow fixed-wing attitude setpoints as Euler angles
         att_msg = VehicleAttitudeSetpoint()
         att_msg.pitch_body  = pitch
         att_msg.roll_body   = roll 
-        att_msg.thrust_body[0] = thr
+        att_msg.thrust_body[0] = thr # Note, providing X (forward) thrust assumes fixed-wing!
         
         self.get_logger().info(f'Roll, Pitch, Thr: {180/np.pi * att_msg.roll_body, 180/np.pi * att_msg.pitch_body, att_msg.thrust_body[0]}')
         self.publisher_attitude.publish(att_msg)
@@ -348,3 +362,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
