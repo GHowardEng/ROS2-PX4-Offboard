@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>px4_offboard</name>
+  <version>1.0.0</version>
+  <description>ROS2 python interface for px4</description>
+  <maintainer email="granthoward@uvic.ca">GH</maintainer>
+  <license>BSD-3</license>
+  
+  <depend>px4_msgs</depend>
+  <exec_depend>ros2launch</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
