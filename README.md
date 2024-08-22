@@ -15,7 +15,7 @@ Refer to the [official PX4 setup guide for ROS2](https://docs.px4.io/main/en/ros
 * Install the [Micro XRCE-DDS Agent](https://docs.px4.io/main/en/ros2/user_guide.html#setup-micro-xrce-dds-agent-client).
 
 ### ROS Node Setup
-1. Clone this example repository: `git clone https://github.com/GHowardEng/ROS2-PX4-Offboard.git`
+1. Clone this example repository: `git clone https://github.com/GHowardEng/ROS2-PX4-Offboard.git --recursive`
 * The `dds_topics.yaml` file provided is a modified copy of the vanilla version from [PX4-Autopilot/src/modules/uxrce_dds_client](https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/uxrce_dds_client/dds_topics.yaml) with a number of additional topics added.
   * You may use the vanilla version of this file already included in the PX4-Autopilot reposity - most telemetry and commands are already present.
   * If you wish to use the custom version for addition topics, you must replace the file in your local copy of the PX4 repo, and generate a custom build of the firmware (upload to your target hardware if required). 
