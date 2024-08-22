@@ -39,8 +39,11 @@ Refer to the [official PX4 setup guide for ROS2](https://docs.px4.io/main/en/ros
 
 ## Running
 1. PX4 and uXRCE-DDS Client:
-  * If running software-in-the-loop (SITL), start a PX4 SITL instance on your machine with `make px4_sitl gz_rc_cessna`. The uXRCE-DDS client is started automatically on a SITL instances, with network configuraiton `localhost:8888`.
-  * If running with real PX4 hardware, make an ethernet connection between the companion device and autopilot hardware. Boot up the autopilot and access the system shell (MAVLink Console in QGroundControl). Start the uXRCE-DDS client with `uxrce_dds_client start -h <Companion IP> -p <Port>` (note this assumes UDP protocol).
+  * If running software-in-the-loop (SITL), start a PX4 SITL instance on your machine with `make px4_sitl gz_rc_cessna`.
+    * The uXRCE-DDS client is started automatically on a SITL instances, with network configuraiton `localhost:8888`.
+  * If running with real PX4 hardware, make an ethernet connection between the companion device and autopilot hardware.
+    * Boot up the autopilot and access the system shell (MAVLink Console in QGroundControl).
+    * Start the uXRCE-DDS client with `uxrce_dds_client start -h <Companion IP> -p <Port>` (note this assumes UDP protocol).
 
 2. uXRCE-DDS Agent (on companion device):
   * From a new terminal instance, boot the agent with `MicroXRCEAgent udp4 -p <Port>` (matching port selected with PX4's client).
