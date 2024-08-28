@@ -35,7 +35,10 @@ Refer to the [official PX4 setup guide for ROS2](https://docs.px4.io/main/en/ros
   
 3. Build the ROS node:
 * Navigate to the `ws_offboard_example` folder
+* If not done already, the terminal instance you are using must be setup for the ROS environment:
+   `source /opt/ros/humble/setup.bash`
 * Run a build with `colcon build`. This will build all packages under the `/src` folder.
+* Note there are some conflicts building with newer versions of `setuptools` package. Depending on the version you have installed, you may need to downgrade (version `69.5.1` is known to work successfully)
 
 ## Running
 1. PX4 and uXRCE-DDS Client:
