@@ -3,13 +3,6 @@
 # This file maps all the topics that are to be used on the uXRCE-DDS client.
 #
 #####
-#
-# Custom version of dds_topics.yaml which includes additional topics for PX4 to publish/subscribe to. 
-# You may add/remove topics/msgs as needed (refer to PX4 message reference: https://docs.px4.io/main/en/msg_docs/).
-# Include this file in ~/PX4-Autopilot/src/modules/uxrce_dds_client before building your custom firmware.
-#
-#####
-
 publications:
 
   - topic: /fmu/out/register_ext_component_reply
@@ -48,17 +41,14 @@ publications:
   - topic: /fmu/out/timesync_status
     type: px4_msgs::msg::TimesyncStatus
 
-  - topic: /fmu/out/vehicle_angular_velocity
-    type: px4_msgs::msg::VehicleAngularVelocity
+  # - topic: /fmu/out/vehicle_angular_velocity
+  #   type: px4_msgs::msg::VehicleAngularVelocity
 
   - topic: /fmu/out/vehicle_land_detected
     type: px4_msgs::msg::VehicleLandDetected
 
   - topic: /fmu/out/vehicle_attitude
     type: px4_msgs::msg::VehicleAttitude
-    
-  - topic: /fmu/out/vehicle_attitude_setpoint
-    type: px4_msgs::msg::VehicleAttitudeSetpoint
 
   - topic: /fmu/out/vehicle_control_mode
     type: px4_msgs::msg::VehicleControlMode
@@ -81,39 +71,15 @@ publications:
   - topic: /fmu/out/vehicle_status
     type: px4_msgs::msg::VehicleStatus
 
-  - topic: /fmu/out/vehicle_trajectory_waypoint_desired
-    type: px4_msgs::msg::VehicleTrajectoryWaypoint
-    
-  - topic: /fmu/out/vehicle_thrust_setpoint
-    type: px4_msgs::msg::VehicleThrustSetpoint
+  - topic: /fmu/out/airspeed_validated
+    type: px4_msgs::msg::AirspeedValidated
 
-  - topic: /fmu/out/vehicle_torque_setpoint
-    type: px4_msgs::msg::VehicleTorqueSetpoint 
-    
-  - topic: /fmu/out/vehicle_rates_setpoint
-    type: px4_msgs::msg::VehicleRatesSetpoint
-    
-  - topic: /fmu/out/vehicle_angular_acceleration_setpoint
-    type: px4_msgs::msg::VehicleAngularAccelerationSetpoint
-    
-  - topic: /fmu/out/vehicle_acceleration
-    type: px4_msgs::msg::VehicleAcceleration
-    
-  - topic: /fmu/out/actuator_motors
-    type: px4_msgs::msg::ActuatorMotors
+  - topic: /fmu/out/vtol_vehicle_status
+    type: px4_msgs::msg::VtolVehicleStatus
 
-  - topic: /fmu/out/actuator_servos
-    type: px4_msgs::msg::ActuatorServos
-    
-  - topic: /fmu/out/airspeed_wind
-    type: px4_msgs::msg::AirspeedWind
-    
-  - topic: /fmu/out/airspeed
-    type: px4_msgs::msg::Airspeed
+  - topic: /fmu/out/home_position
+    type: px4_msgs::msg::HomePosition
 
-  - topic: /fmu/out/wind
-    type: px4_msgs::msg::Wind
-    
 # Create uORB::Publication
 subscriptions:
   - topic: /fmu/in/register_ext_component_request
@@ -136,6 +102,9 @@ subscriptions:
 
   - topic: /fmu/in/config_control_setpoints
     type: px4_msgs::msg::VehicleControlMode
+
+  - topic: /fmu/in/distance_sensor
+    type: px4_msgs::msg::DistanceSensor
 
   - topic: /fmu/in/manual_control_input
     type: px4_msgs::msg::ManualControlSetpoint
@@ -179,12 +148,6 @@ subscriptions:
   - topic: /fmu/in/vehicle_command_mode_executor
     type: px4_msgs::msg::VehicleCommand
 
-  - topic: /fmu/in/vehicle_trajectory_bezier
-    type: px4_msgs::msg::VehicleTrajectoryBezier
-
-  - topic: /fmu/in/vehicle_trajectory_waypoint
-    type: px4_msgs::msg::VehicleTrajectoryWaypoint
-
   - topic: /fmu/in/vehicle_thrust_setpoint
     type: px4_msgs::msg::VehicleThrustSetpoint
 
@@ -196,12 +159,12 @@ subscriptions:
 
   - topic: /fmu/in/actuator_servos
     type: px4_msgs::msg::ActuatorServos
-    
-  - topic: /fmu/in/action_request
-    type: px4_msgs::msg::ActionRequest
 
   - topic: /fmu/in/aux_global_position
     type: px4_msgs::msg::VehicleGlobalPosition
+    
+  - topic: /fmu/in/action_request
+    type: px4_msgs::msg::ActionRequest
 
 # Create uORB::PublicationMulti
 subscriptions_multi:
