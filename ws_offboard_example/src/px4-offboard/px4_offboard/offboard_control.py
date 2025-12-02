@@ -152,7 +152,7 @@ class OffboardControl(Node):
         # Vehicle status
         self.status_sub = self.create_subscription(
             VehicleStatus,
-            '/fmu/out/vehicle_status',
+            '/fmu/out/vehicle_status_v1',
             self.vehicle_status_callback,
             qos_profile)
         
@@ -260,7 +260,7 @@ class OffboardControl(Node):
                     self.get_logger().info(f'Revert to mode: {self.last_nav_state}')
 
                 else:
-                    self.send_attitude_cmds(roll= 15 * np.pi/180 * np.sin(2*np.pi*0.5*(time()-self.trigger_time)), pitch=0.0, thr=0.5) # Send basic attitude and throttle commands
+                    self.send_attitude_cmds_quaternion(roll= 15 * np.pi/180 * np.sin(2*np.pi*0.5*(time()-self.trigger_time)), pitch=0.0, thr=0.5) # Send basic attitude and throttle commands
 
             # Else armed but not in offboard
             else:           
