@@ -10,19 +10,19 @@ Based on source code from [PX4](https://github.com/PX4) and [Jaeyoung Lim](https
 Refer to the [official PX4 setup guide for ROS2](https://docs.px4.io/main/en/ros2/user_guide.html):
 
 * Installation and setup of the [PX4 developement environment](https://docs.px4.io/main/en/ros2/user_guide.html#install-px4) is not strictly required but is recommended for simualtion purposes and source code.
-  * Note that this project is developed for and tested with the upcomming [version 1.15 of PX4](https://github.com/PX4/PX4-Autopilot/tree/v1.15.0-rc1) for full support of the uXRCE-DDS interface.
+  * Note that this project is developed for and tested with [version 1.16 of PX4](https://github.com/PX4/PX4-Autopilot/tree/v1.16.0) for full support of the uXRCE-DDS interface.
 * Install [ROS2 Humble](https://docs.px4.io/main/en/ros2/user_guide.html#install-ros-2).
 * Install the [Micro XRCE-DDS Agent](https://docs.px4.io/main/en/ros2/user_guide.html#setup-micro-xrce-dds-agent-client).
 
 ### ROS Node Setup
 1. Clone this example repository: `git clone https://github.com/GHowardEng/ROS2-PX4-Offboard.git --recursive`
-* The `dds_topics.yaml` file provided is a modified copy of the vanilla version from [PX4-Autopilot/src/modules/uxrce_dds_client](https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/uxrce_dds_client/dds_topics.yaml) with a number of additional topics added.
+* The `dds_topics.yaml` file provided is a modified copy of the vanilla version from [PX4-Autopilot/src/modules/uxrce_dds_client](https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/uxrce_dds_client/dds_topics.yaml) with some additional topics added.
   * You may use the vanilla version of this file already included in the PX4-Autopilot reposity - most telemetry and commands are already present.
   * If you wish to use the custom version for addition topics, you must replace the file in your local copy of the PX4 repo, and generate a custom build of the firmware (upload to your target hardware if required). 
   * You may add or remove topics as desired for your application.
 
 2. <b>IMPORTANT:</b> Verify px4_msgs is synchronized with the specific version of PX4-Autopilot being used!
-* A version of the [px4_msgs repo](https://github.com/PX4/px4_msgs) is included as a submodule in the `ws_offboard_example/src` folder. This should be compatible with PX4 version `v1.15.0-rc1`
+* The release/1.16 version of the [px4_msgs repo](https://github.com/PX4/px4_msgs) is included as a submodule in the `ws_offboard_example/src` folder. This should be compatible with PX4 version `v1.16.0`
 * If using another major release, you may checkout the branch assoicated with this release version in the `px4_msgs` submodule (e.g. [1.14](https://github.com/PX4/px4_msgs/tree/release/1.14))
 * If using any other version, such as running PX4 from the `main` branch, or encounter message compatibility issues, you should manually synchronize the message definitions:
 
