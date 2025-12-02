@@ -276,16 +276,6 @@ class OffboardControl(Node):
         self.get_logger().info(f'Roll, Pitch, thr: {180/np.pi * roll}, {180/np.pi * pitch}, {att_msg.thrust_body[0]}')
         self.publisher_attitude.publish(att_msg)
 
-    def send_attitude_cmds(self, roll, pitch, thr):
-        # Older versions of PX4 allow fixed-wing attitude setpoints as Euler angles
-        att_msg = VehicleAttitudeSetpoint()
-        att_msg.pitch_body  = pitch
-        att_msg.roll_body   = roll 
-        att_msg.thrust_body[0] = thr # Note, providing X (forward) thrust assumes fixed-wing!
-        
-        self.get_logger().info(f'Roll, Pitch, Thr: {180/np.pi * att_msg.roll_body, 180/np.pi * att_msg.pitch_body, att_msg.thrust_body[0]}')
-        self.publisher_attitude.publish(att_msg)
-
     def send_servo_cmds(self, servos):
         
         servo_msg = ActuatorServos()
